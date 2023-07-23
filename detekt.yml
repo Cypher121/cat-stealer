@@ -269,8 +269,8 @@ formatting:
     active: true
     autoCorrect: true
   MultiLineIfElse:
-    active: true
-    autoCorrect: true
+    active: false
+    autoCorrect: false
   NoBlankLineBeforeRbrace:
     active: true
     autoCorrect: true
@@ -514,7 +514,7 @@ style:
   CollapsibleIfStatements:
     active: true
   DataClassContainsFunctions:
-    active: true
+    active: false
     conversionFunctionPrefix: 'to'
   DataClassShouldBeImmutable:
     active: true
@@ -560,7 +560,7 @@ style:
     active: true
     maxJumpCount: 3
   MagicNumber:
-    active: true
+    active: false
     excludes: ['**/test/**', '**/androidTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt']
     ignoreNumbers: ['-1', '0', '1', '2']
     ignoreHashCodeFunction: true

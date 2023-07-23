@@ -1,18 +1,22 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     application
 
-    kotlin("jvm")
-    kotlin("plugin.serialization")
-
-    id("com.github.jakemarsden.git-hooks")
-    id("com.github.johnrengelman.shadow")
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.serialization)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.git.hooks)
 }
 
-group = "template"
+group = "coffee.cypher.catstealer"
 version = "1.0-SNAPSHOT"
+
+application {
+    mainClass.set("coffee.cypher.catstealer.AppKt")
+}
 
 repositories {
     google()
@@ -43,11 +47,6 @@ dependencies {
     implementation(libs.logging)
 }
 
-application {
-    // This is deprecated, but the Shadow plugin requires it
-    mainClassName = "template.AppKt"
-}
-
 gitHooks {
     setHooks(
         mapOf("pre-commit" to "detekt")
@@ -55,27 +54,24 @@ gitHooks {
 }
 
 tasks.withType<KotlinCompile> {
-    // Current LTS version of Java
-    kotlinOptions.jvmTarget = "11"
-
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
 }
 
 tasks.jar {
     manifest {
         attributes(
-            "Main-Class" to "template.AppKt"
+            "Main-Class" to "coffee.cypher.catstealer.AppKt"
         )
     }
 }
 
 java {
-    // Current LTS version of Java
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 detekt {
     buildUponDefaultConfig = true
-    config = rootProject.files("detekt.yml")
+    config.from(rootProject.files("detekt.yml"))
 }
